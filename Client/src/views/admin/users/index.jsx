@@ -146,7 +146,7 @@ export default function UsersData() {
 
           <ModalCloseButton />
           <ModalBody>
-            <FormLabel>First name</FormLabel>
+            <FormLabel>First name:</FormLabel>
             <Input
               type="text"
               name="name"
