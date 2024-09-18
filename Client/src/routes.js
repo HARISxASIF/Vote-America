@@ -7,11 +7,14 @@ import {
   MdHome,
   MdLock,
   MdOutlineShoppingCart,
+  MdOutlineLocalPolice ,
 } from 'react-icons/md';
 
 // Admin Imports
 import MainDashboard from 'views/admin/default';
 import Users from 'views/admin/users';
+import StateElections from 'views/admin/stateElection';
+import LocalElections from 'views/admin/localElection';
 import NFTMarketplace from 'views/admin/marketplace';
 import Profile from 'views/admin/profile';
 import DataTables from 'views/admin/dataTables';
@@ -56,6 +59,20 @@ const routes = [
     path: '/users',
     icon: <Icon as={MdPerson} width="20px" height="20px" color="#082463" />,
     component: <Users />,
+  },
+  {
+    name: 'State Elections',
+    layout: '/admin',
+    path: '/state-elections',
+    icon: <Icon as={MdOutlineLocalPolice} width="20px" height="20px" color="#082463" />,
+    component: <StateElections />,
+  },
+  {
+    name: 'Local Elections',
+    layout: '/admin',
+    path: '/local-elections',
+    icon: <Icon as={MdOutlineLocalPolice} width="20px" height="20px" color="#082463" />,
+    component: <LocalElections />,
   },
   // {
   //   name: 'Profile',

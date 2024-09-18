@@ -2,37 +2,16 @@
 
 // Chakra imports
 import {
-  Table,
-  Thead,
-  Tbody,
-  Tfoot,
-  Tr,
-  Th,
-  Td,
-  TableCaption,
-  TableContainer,
-  Text,
-  Modal,
-  ModalOverlay,
-  ModalContent,
-  ModalHeader,
-  ModalFooter,
-  ModalBody,
-  ModalCloseButton,
   Button,
   Box,
   Flex,
-  FormControl,
-  FormLabel,
-  Heading,
-  Icon,
-  Input,
-  InputGroup,
+
 } from '@chakra-ui/react';
 
 import { useDisclosure } from '@chakra-ui/react';
 import { getUser } from 'action/getUser';
-
+import UserTable from './components/UserTable';
+import UserModal from './components/UserModal'; 
 // Assets
 
 // Custom components
@@ -40,11 +19,11 @@ import React, { useEffect, useState } from 'react';
 
 export default function UsersData() {
   const [users, setUsers] = useState([
-    { id: 1, name: 'John Doe', phone: '123-456-7890' },
-    { id: 2, name: 'Jane Smith', phone: '098-765-4321' },
+    { id: 1, name: 'John Doe', phone: '123-456-7890',email:'johndoe@gmail.com', },
+    { id: 2, name: 'Jane Smith', phone: '098-765-4321',email:'janesmith@gmail.com', },
   ]);
 
-  const [newUser, setNewUser] = useState({ name: '', phone: '' });
+  const [newUser, setNewUser] = useState({ name: '', phone: '',email:'' });
   const [isEditing, setIsEditing] = useState(false);
   const [currentUser, setCurrentUser] = useState(null);
   const { isOpen, onOpen, onClose } = useDisclosure();
@@ -61,9 +40,9 @@ export default function UsersData() {
   const handleAddUser = () => {
     setUsers([
       ...users,
-      { id: Date.now(), name: newUser.name, phone: newUser.phone },
+      { id: Date.now(), name: newUser.name, phone: newUser.phone,email:newUser.email },
     ]);
-    setNewUser({ name: '', phone: '' });
+    setNewUser({ name: '', phone: '' , email:'' });
     onClose();
   };
 
@@ -87,12 +66,12 @@ export default function UsersData() {
     setUsers(
       users.map((user) =>
         user.id === currentUser.id
-          ? { ...currentUser, name: newUser.name, phone: newUser.phone }
+          ? { ...currentUser, name: newUser.name, phone: newUser.phone , email: newUser.email }
           : user,
       ),
     );
     setIsEditing(false);
-    setNewUser({ name: '', phone: '' });
+    setNewUser({ name: '', phone: '' , email:'' });
     setCurrentUser(null);
     onClose();
   };
@@ -133,129 +112,17 @@ export default function UsersData() {
         </Box>
       </Flex>
 
-      <Modal blockScrollOnMount={false} isOpen={isOpen} onClose={onClose}>
-        <ModalOverlay />
-        <ModalContent>
-          {isEditing ? (
-            <ModalHeader>Update User</ModalHeader>
-          ) : (
-            <ModalHeader fontSize="22px" color="#082463" fontWeight="700">
-              Add User
-            </ModalHeader>
-          )}
+      <UserModal
+        isOpen={isOpen}
+        onClose={onClose}
+        isEditing={isEditing}
+        newUser={newUser}
+        handleInputChange={handleInputChange}
+        handleAddUser={handleAddUser}
+        handleUpdateUser={handleUpdateUser}
+      />
 
-          <ModalCloseButton />
-          <ModalBody>
-            <FormLabel>First name:</FormLabel>
-            <Input
-              type="text"
-              name="name"
-              placeholder="Enter name"
-              value={newUser.name}
-              onChange={handleInputChange}
-            />
-
-            <FormLabel mt="15px">Phone No.</FormLabel>
-            <Input
-              type="text"
-              name="phone"
-              placeholder="Enter phone number"
-              value={newUser.phone}
-              onChange={handleInputChange}
-            />
-            {isEditing ? (
-              <Button
-                fontSize="16px"
-                variant="brand"
-                fontWeight="500"
-                w="100%"
-                h="40px"
-                borderRadius="5px"
-                mt="30px"
-                bg="#082463"
-                _hover={{ bg: '#CF2B28' }}
-                _active={{ bg: '#082463' }}
-                _focus={{ bg: '#082463' }}
-                onClick={handleUpdateUser}
-              >
-                Update User
-              </Button>
-            ) : (
-              <Button
-                fontSize="16px"
-                variant="brand"
-                fontWeight="500"
-                w="100%"
-                h="40px"
-                borderRadius="5px"
-                mt="30px"
-                bg="#082463"
-                _hover={{ bg: '#CF2B28' }}
-                _active={{ bg: '#082463' }}
-                _focus={{ bg: '#082463' }}
-                onClick={handleAddUser}
-              >
-                Add User
-              </Button>
-            )}
-          </ModalBody>
-
-          <ModalFooter></ModalFooter>
-        </ModalContent>
-      </Modal>
-
-      {/* User List
-      <table border="1" cellPadding="10" style={{ marginTop: '20px' }}>
-        <thead>
-          <tr>
-            <th>Name</th>
-            <th>Phone No</th>
-            <th>Actions</th>
-          </tr>
-        </thead>
-        <tbody>
-          {users.map((user) => (
-            <tr key={user.id}>
-              <td>{user.name}</td>
-              <td>{user.phone}</td>
-              <td>
-                <button onClick={() => handleEditUser(user)}>Edit</button>
-                <button onClick={() => handleDeleteUser(user.id)}>
-                  Delete
-                </button>
-              </td>
-            </tr>
-          ))}
-        </tbody>
-      </table> */}
-      <TableContainer position="relative" top="80px">
-        <Text color="#082463" fontWeight="600" fontSize="22px" mb="15px">
-          User List
-        </Text>
-        <Table variant="striped" colorScheme="blackAlpha">
-          <Thead>
-            <Tr>
-              <Th>NAME</Th>
-              <Th>PHONE NO.</Th>
-              <Th isNumeric>ACTIONS</Th>
-            </Tr>
-          </Thead>
-          <Tbody>
-            {users.map((user) => (
-              <Tr key={user.id}>
-                <Td>{user.name}</Td>
-                <Td>{user.phone}</Td>
-                <Td isNumeric>
-                  <button onClick={() => handleEditUser(user)}>Edit</button>
-                  <button onClick={() => handleDeleteUser(user.id)}>
-                    Delete
-                  </button>
-                </Td>
-              </Tr>
-            ))}
-          </Tbody>
-        </Table>
-      </TableContainer>
+      <UserTable users={users} handleEditUser={handleEditUser} handleDeleteUser={handleDeleteUser} />
     </div>
   );
 }
