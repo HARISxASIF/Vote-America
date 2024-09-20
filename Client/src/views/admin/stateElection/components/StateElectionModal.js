@@ -42,7 +42,7 @@ const StateElectionModal = ({
           />
 
            {/* Image Upload */}
-           <FormLabel mt="15px">Stage Election Image:</FormLabel>
+           <FormLabel mt="15px">State Election Image:</FormLabel>
           <Input
             type="file"
             name="image"

@@ -8,7 +8,7 @@ const StateElectionTable = ({ stateElections, handleEditStateElection, handleDel
   return (
     <TableContainer position="relative" top="80px">
       <Text color="#082463" fontWeight="600" fontSize="22px" mb="15px">
-        State Election List
+        State Elections List
       </Text>
       <Table variant="striped" colorScheme="blackAlpha">
         <Thead>

@@ -2,9 +2,12 @@
 import React from "react";
 import { NavLink, useLocation } from "react-router-dom";
 // chakra imports
-import { Box, Flex, HStack, Text, useColorModeValue } from "@chakra-ui/react";
+import { Box, Flex, HStack, Text, useColorModeValue,Button } from "@chakra-ui/react";
 
 export function SidebarLinks(props) {
+
+
+
   //   Chakra color mode
   let location = useLocation();
   let activeColor = useColorModeValue("gray.700", "white");
@@ -52,6 +55,7 @@ export function SidebarLinks(props) {
         route.layout === "/rtl"
       ) {
         return (
+          <>
           <NavLink key={index} to={route.layout + route.path}>
             {route.icon ? (
               <Box>
@@ -121,8 +125,13 @@ export function SidebarLinks(props) {
                   <Box h='36px' w='4px' bg='#082463' borderRadius='5px' />
                 </HStack>
               </Box>
+              
             )}
+            
           </NavLink>
+          
+
+          </>
         );
       }
     });

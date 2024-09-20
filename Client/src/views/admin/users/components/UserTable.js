@@ -8,7 +8,7 @@ const UserTable = ({ users, handleEditUser, handleDeleteUser }) => {
   return (
     <TableContainer position="relative" top="80px">
       <Text color="#082463" fontWeight="600" fontSize="22px" mb="15px">
-        User List
+        Users List
       </Text>
       <Table variant="striped" colorScheme="blackAlpha">
         <Thead>

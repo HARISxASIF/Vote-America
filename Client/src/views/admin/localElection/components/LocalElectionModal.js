@@ -22,6 +22,7 @@ const LocalElectionModal = ({
   handleAddLocalElection,
   handleUpdateLocalElection,
   handleImageChange,
+  handleIconChange,
 }) => {
   return (
     <Modal blockScrollOnMount={false} isOpen={isOpen} onClose={onClose}>
@@ -42,12 +43,20 @@ const LocalElectionModal = ({
           />
 
            {/* Image Upload */}
-           <FormLabel mt="15px">Profile Image:</FormLabel>
+           <FormLabel mt="15px">Local Election Image</FormLabel>
           <Input
             type="file"
             name="image"
             accept="image/*"
             onChange={handleImageChange} // NEW: Handle file input change
+          />
+
+<FormLabel mt="15px">Local Election Icon</FormLabel>
+          <Input
+            type="file"
+            name="icon"
+            accept="image/*"
+            onChange={handleIconChange} // NEW: Handle file input change
           />
 
           <Button

@@ -1,5 +1,5 @@
 // Chakra imports
-import { Portal, Box, useDisclosure } from '@chakra-ui/react';
+import { Portal, Box, useDisclosure, Button } from '@chakra-ui/react';
 import Footer from 'components/footer/FooterAdmin.js';
 // Layout components
 import Navbar from 'components/navbar/NavbarAdmin.js';
@@ -9,8 +9,13 @@ import React, { useState } from 'react';
 import { Navigate, Route, Routes } from 'react-router-dom';
 import routes from 'routes.js';
 
+
 // Custom Chakra theme
 export default function Dashboard(props) {
+
+
+
+
   const { ...rest } = props;
   // states and functions
   const [fixed] = useState(false);
@@ -158,6 +163,7 @@ export default function Dashboard(props) {
                     element={<Navigate to="/admin/users" replace />}
                   />
                 </Routes>
+                
               </Box>
             ) : null}
             <Box>

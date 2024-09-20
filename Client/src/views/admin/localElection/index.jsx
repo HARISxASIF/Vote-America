@@ -8,11 +8,11 @@ import { useDisclosure } from '@chakra-ui/react';
 
 export default function LocalElectionsData() {
   const [localElections, setLocalElections] = useState([
-    { id: 1, name: 'City Mayor Election', image: 'https://alchetron.com/cdn/john-doe-musician-8ffff17f-5d57-4345-bda0-090736fdb6f-resize-750.jpeg' },
-    { id: 2, name: 'District Council Election', image: 'https://resizing.flixster.com/-XZAfHZM39UwaGJIFWKAE8fS0ak=/v3/t/assets/163901_v9_ba.jpg' },
+    { id: 1, name: 'City Mayor Election', image: 'https://alchetron.com/cdn/john-doe-musician-8ffff17f-5d57-4345-bda0-090736fdb6f-resize-750.jpeg', icon: 'http://localhost:3000/static/media/brandLogo.760e5dcc2a41b5a8afe4cdffbcc0ccb9.svg' },
+    { id: 2, name: 'District Council Election', image: 'https://resizing.flixster.com/-XZAfHZM39UwaGJIFWKAE8fS0ak=/v3/t/assets/163901_v9_ba.jpg', icon: 'http://localhost:3000/static/media/brandLogo.760e5dcc2a41b5a8afe4cdffbcc0ccb9.svg' },
   ]);
 
-  const [newLocalElection, setNewLocalElection] = useState({ name: '', image: null });
+  const [newLocalElection, setNewLocalElection] = useState({ name: '', image: null, icon: null });
   const [isEditing, setIsEditing] = useState(false);
   const [currentLocalElection, setCurrentLocalElection] = useState(null);
   const { isOpen, onOpen, onClose } = useDisclosure();
@@ -25,23 +25,29 @@ export default function LocalElectionsData() {
     });
   };
 
-  // Handle image file change
+  // Handle image file changes (image and icon)
   const handleImageChange = (e) => {
     const file = e.target.files[0];
     setNewLocalElection({ ...newLocalElection, image: file });
+  };
+
+  const handleIconChange = (e) => {
+    const file = e.target.files[0];
+    setNewLocalElection({ ...newLocalElection, icon: file });
   };
 
   // Add a new local election
   const handleAddLocalElection = () => {
     setLocalElections([
       ...localElections,
-      { id: Date.now(), name: newLocalElection.name,
-        image: newLocalElection.image instanceof File
-        ? URL.createObjectURL(newLocalElection.image)
-        : 'https://static.vecteezy.com/system/resources/thumbnails/009/292/244/small/default-avatar-icon-of-social-media-user-vector.jpg',
+      {
+        id: Date.now(),
+        name: newLocalElection.name,
+        image: newLocalElection.image instanceof File ? URL.createObjectURL(newLocalElection.image) : 'https://static.vecteezy.com/system/resources/thumbnails/009/292/244/small/default-avatar-icon-of-social-media-user-vector.jpg',
+        icon: newLocalElection.icon instanceof File ? URL.createObjectURL(newLocalElection.icon) : 'https://static.vecteezy.com/system/resources/thumbnails/009/292/244/small/default-avatar-icon-of-social-media-user-vector.jpg',
       },
     ]);
-    setNewLocalElection({ name: '', image: null });
+    setNewLocalElection({ name: '', image: null, icon: null });
     onClose();
   };
 
@@ -65,16 +71,21 @@ export default function LocalElectionsData() {
     setLocalElections(
       localElections.map((localElection) =>
         localElection.id === currentLocalElection.id
-          ? { ...currentLocalElection, 
-            name: newLocalElection.name, 
-            image: newLocalElection.image instanceof File
-              ? URL.createObjectURL(newLocalElection.image)
-              : currentLocalElection.image, }
+          ? {
+              ...currentLocalElection,
+              name: newLocalElection.name,
+              image: newLocalElection.image instanceof File
+                ? URL.createObjectURL(newLocalElection.image)
+                : currentLocalElection.image,
+              icon: newLocalElection.icon instanceof File
+                ? URL.createObjectURL(newLocalElection.icon)
+                : currentLocalElection.icon,
+            }
           : localElection
       )
     );
     setIsEditing(false);
-    setNewLocalElection({ name: '', image: null });
+    setNewLocalElection({ name: '', image: null, icon: null });
     setCurrentLocalElection(null);
     onClose();
   };
@@ -117,6 +128,7 @@ export default function LocalElectionsData() {
         newLocalElection={newLocalElection}
         handleInputChange={handleInputChange}
         handleImageChange={handleImageChange}
+        handleIconChange={handleIconChange}
         handleAddLocalElection={handleAddLocalElection}
         handleUpdateLocalElection={handleUpdateLocalElection}
       />

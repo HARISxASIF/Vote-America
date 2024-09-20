@@ -1,8 +1,8 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { NavLink } from 'react-router-dom';
 import { Redirect } from 'react-router-dom';
 // Formik Imports
-import {  useFormik } from 'formik';
+import { useFormik } from 'formik';
 
 // Chakra imports
 import {
@@ -31,7 +31,12 @@ import { RiEyeCloseLine } from 'react-icons/ri';
 import * as Yup from 'yup';
 import { useNavigate } from 'react-router-dom';
 import { login } from 'action/login';
-
+import {
+  Alert,
+  AlertIcon,
+  AlertTitle,
+  AlertDescription,
+} from '@chakra-ui/react';
 function SignIn() {
   // Chakra color mode
 
@@ -52,6 +57,8 @@ function SignIn() {
     { bg: 'whiteAlpha.200' },
   );
   const [show, setShow] = React.useState(false);
+
+  const [isError, setIsError] = useState(false);
   const handleClick = () => setShow(!show);
 
   const formik = useFormik({
@@ -65,29 +72,27 @@ function SignIn() {
       email: Yup.string().email().required('Enter Your Email'),
       password: Yup.string().required('Enter Your Password'),
     }),
-   
-    onSubmit: (values, {resetForm}) => {
+
+    onSubmit: (values, { resetForm }) => {
       handleSubmit(values);
       // resetForm();
     },
   });
-  const handleSubmit =  (initialValues) => {
-
+  const handleSubmit = async (initialValues) => {
     // const {email, password} = {...initialValues}
 
-    const res =  login(initialValues)
-    // if (email== "admin@gmail.com" && password == "admin@!@#"){
-    //   alert("Login Successful");
-    //   navigate('/admin');
-      
-    // }
-    // else {
-    //   alert("Incorrect Email or Password");
-    // }
- 
+    const res = await login(initialValues);
+    // console.log(res, ':res');
+
+    if (res.status_code == 200) {
+      navigate('/admin');
+    } else {
+      setIsError(true);
+    }
   };
   return (
     <DefaultAuth illustrationBackground={illustration} image={illustration}>
+      
       <Flex
         maxW={{ base: '100%', md: 'max-content' }}
         w="100%"
@@ -223,7 +228,15 @@ function SignIn() {
               Sign In
             </Button>
           </form>
-          
+          {isError && (
+        <Alert status="error">
+          <AlertIcon />
+          <AlertTitle>Sign In Failed</AlertTitle>
+          <AlertDescription>
+            Invalid Email or Password
+          </AlertDescription>
+        </Alert>
+      )}
           <Flex
             flexDirection="column"
             justifyContent="center"
