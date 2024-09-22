@@ -1,13 +1,15 @@
 import React, { useEffect, useState } from 'react';
-import { Box, Button, Flex } from '@chakra-ui/react'; // Import Chakra UI Button
+import { Box, Button, Flex } from '@chakra-ui/react';
 import { fetchElections } from '../../../action/getElection';
 import ElectionTable from './components/ElectionTable';
 import ElectionModal from './components/ElectionModal'; // Import the ElectionModal
+import { updateElection } from '../../../action/updateElection'; // Import the update function
 
 const ElectionsData = () => {
   const [elections, setElections] = useState([]);
-  const [isModalOpen, setIsModalOpen] = useState(false); // State for modal visibility
-  const token = localStorage.getItem('authToken'); // Replace with your actual token
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [selectedElection, setSelectedElection] = useState(null);
+  const token = localStorage.getItem('authToken');
 
   const getElections = async () => {
     try {
@@ -23,6 +25,24 @@ const ElectionsData = () => {
     getElections();
   }, []);
 
+  const handleEdit = (election) => {
+    setSelectedElection(election); // Set the selected election
+    setIsModalOpen(true); // Open the modal
+  };
+
+  // const handleUpdateElection = async (name, image, icon) => {
+  //   if (selectedElection) {
+  //     try {
+  //       await updateElection(selectedElection._id, name, image, icon, token);
+  //       alert('Election updated successfully!');
+  //       getElections(); // Refresh the elections list
+  //       setIsModalOpen(false); // Close the modal
+  //     } catch (error) {
+  //       alert('Failed to update election');
+  //     }
+  //   }
+  // };
+
   return (
     <div>
       <Flex
@@ -36,7 +56,7 @@ const ElectionsData = () => {
       >
         <Box>
           <Button
-            onClick={() => setIsModalOpen(true)} // Open modal
+            onClick={() => setIsModalOpen(true)}
             bg="#082463"
             color="#fff"
             borderRadius="5px"
@@ -44,18 +64,27 @@ const ElectionsData = () => {
             _active={{ bg: '#082463' }}
             _focus={{ bg: '#082463' }}
             position="relative"
-            top= "100px"
-            zIndex= "999"
+            top="100px"
+            zIndex="999"
           >
             Add Election +
           </Button>
         </Box>
       </Flex>
-      <ElectionTable elections={elections} />
+      <ElectionTable 
+        elections={elections} 
+        onEdit={handleEdit} 
+        onDelete={getElections} // Pass onDelete function to refresh list after deletion
+        token={token} // Pass the token for authorization
+      />
       <ElectionModal
-        isOpen={isModalOpen} // Pass modal state
-        onClose={() => setIsModalOpen(false)} // Close modal
-        onSuccess={getElections} // Refresh elections after adding
+        isOpen={isModalOpen}
+        onClose={() => {
+          setIsModalOpen(false);
+          setSelectedElection(null); // Clear selected election when closing
+        }}
+        onSuccess={getElections}
+        selectedElection={selectedElection}
       />
     </div>
   );

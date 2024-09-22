@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   Modal,
   ModalOverlay,
@@ -12,29 +12,46 @@ import {
   Button,
 } from '@chakra-ui/react';
 import addElection from '../../../../action/addElections'; // Import the addElection function
+import { updateElection } from '../../../../action/updateElection'; // Import the updateElection function
 
-const ElectionModal = ({ isOpen, onClose, onSuccess }) => {
+const ElectionModal = ({ isOpen, onClose, onSuccess, selectedElection }) => {
   const [name, setName] = useState('');
   const [image, setImage] = useState(null);
   const [icon, setIcon] = useState(null);
   const token = localStorage.getItem('authToken'); // Replace with your actual token
 
+  useEffect(() => {
+    if (selectedElection) {
+      setName(selectedElection.name);
+      // Reset image and icon when opening the modal
+      setImage(null);
+      setIcon(null);
+    } else {
+      resetForm(); // Reset form for adding a new election
+    }
+  }, [selectedElection, isOpen]);
+
   // Function to handle form submission
   const handleSubmit = async (event) => {
     event.preventDefault();
-
     const formData = new FormData();
     formData.append('name', name);
     formData.append('image', image);
     formData.append('icon', icon);
 
     try {
-      await addElection(formData, token); // Call the addElection function
+      if (selectedElection) {
+        await updateElection(selectedElection._id, name, image, icon, token); // Update election
+        alert('Election updated successfully!');
+      } else {
+        await addElection(formData, token); // Add new election
+        alert('Election added successfully!');
+      }
       onSuccess(); // Call onSuccess to refresh the election list
       onClose(); // Close the modal
       resetForm(); // Reset form fields
     } catch (error) {
-      alert('Failed to add election');
+      alert(selectedElection ? 'Failed to update election' : 'Failed to add election');
     }
   };
 
@@ -49,7 +66,7 @@ const ElectionModal = ({ isOpen, onClose, onSuccess }) => {
       <ModalOverlay />
       <ModalContent>
         <ModalHeader fontSize="22px" color="#082463" fontWeight="700">
-          Add Election
+          {selectedElection ? 'Update Election' : 'Add Election'}
         </ModalHeader>
         <ModalCloseButton />
         <ModalBody>
@@ -68,7 +85,7 @@ const ElectionModal = ({ isOpen, onClose, onSuccess }) => {
               type="file"
               accept="image/*"
               onChange={(e) => setImage(e.target.files[0])}
-              required
+              required={!selectedElection} // Make it required only when adding
             />
 
             <FormLabel mt="15px">Election Icon</FormLabel>
@@ -76,7 +93,7 @@ const ElectionModal = ({ isOpen, onClose, onSuccess }) => {
               type="file"
               accept="image/*"
               onChange={(e) => setIcon(e.target.files[0])}
-              required
+              required={!selectedElection} // Make it required only when adding
             />
 
             <Button
@@ -93,7 +110,7 @@ const ElectionModal = ({ isOpen, onClose, onSuccess }) => {
               _focus={{ bg: '#082463' }}
               type="submit"
             >
-              Add Election
+              {selectedElection ? 'Update Election' : 'Add Election'}
             </Button>
           </form>
         </ModalBody>
