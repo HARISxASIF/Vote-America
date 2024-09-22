@@ -13,8 +13,7 @@ import {
 // Admin Imports
 import MainDashboard from 'views/admin/default';
 import Users from 'views/admin/users';
-import StateElections from 'views/admin/stateElection';
-import LocalElections from 'views/admin/localElection';
+import Elections from 'views/admin/Elections';
 
 
 // Auth Imports
@@ -58,18 +57,11 @@ const routes = [
     component: <Users />,
   },
   {
-    name: 'State Elections',
+    name: 'Elections',
     layout: '/admin',
-    path: '/state-elections',
+    path: '/elections',
     icon: <Icon as={MdOutlineLocalPolice} width="20px" height="20px" color="#082463" />,
-    component: <StateElections />,
-  },
-  {
-    name: 'Local Elections',
-    layout: '/admin',
-    path: '/local-elections',
-    icon: <Icon as={MdOutlineLocalPolice} width="20px" height="20px" color="#082463" />,
-    component: <LocalElections />,
+    component: <Elections />,
   },
   // {
   //   name: 'Profile',

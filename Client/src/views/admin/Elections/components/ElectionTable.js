@@ -4,11 +4,13 @@ import { TbEdit } from "react-icons/tb";
 import { MdOutlineDeleteOutline } from "react-icons/md";
 
 
-const LocalElectionTable = ({ localElections, handleEditLocalElection, handleDeleteLocalElection }) => {
+
+
+const ElectionTable = ({ elections}) => {
   return (
     <TableContainer position="relative" top="80px">
       <Text color="#082463" fontWeight="600" fontSize="22px" mb="15px">
-        Local Elections List
+        Elections List
       </Text>
       <Table variant="striped" colorScheme="blackAlpha">
         <Thead>
@@ -20,15 +22,19 @@ const LocalElectionTable = ({ localElections, handleEditLocalElection, handleDel
           </Tr>
         </Thead>
         <Tbody>
-          {localElections.map((user) => (
-            <Tr key={user.id}>
-              <Td>{user.name}</Td>
-              <Td><Image src={user.image} alt={user.name} boxSize="50px" borderRadius="10px" /></Td>
-              <Td><Image src={user.icon} alt={user.name} boxSize="50px" borderRadius="10px" /></Td>
+          {elections.map((election, index) => (
+            <Tr key={index}>
+              <Td>{election.name}</Td>
+              <Td><Image src={election.image} alt={`${election.name} image`} boxSize="50px" borderRadius="10px" /></Td>
+              <Td><Image src={election.icon} alt={`${election.name} icon`} boxSize="50px" borderRadius="10px" /></Td>
               <Td isNumeric>
+                <button><Icon as={TbEdit} /></button>
+                <button style={{marginLeft:"10px",}}><Icon as={MdOutlineDeleteOutline} /></button>
+              </Td>
+              {/* <Td isNumeric>
                 <button onClick={() => handleEditLocalElection(user)}><Icon as={TbEdit} /></button>
                 <button style={{marginLeft:"10px",}} onClick={() => handleDeleteLocalElection(user.id)}><Icon as={MdOutlineDeleteOutline} /></button>
-              </Td>
+              </Td> */}
             </Tr>
           ))}
         </Tbody>
@@ -37,4 +43,4 @@ const LocalElectionTable = ({ localElections, handleEditLocalElection, handleDel
   );
 };
 
-export default LocalElectionTable;
+export default ElectionTable;
