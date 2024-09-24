@@ -13,6 +13,7 @@ import {
 // Admin Imports
 import Users from 'views/admin/users';
 import Elections from 'views/admin/Elections';
+import ElectionsCategory from 'views/admin/Elections Category';
 
 
 // Auth Imports
@@ -32,6 +33,13 @@ const routes = [
     path: '/elections',
     icon: <Icon as={MdOutlineLocalPolice} width="20px" height="20px" color="#082463" />,
     component: <Elections />,
+  },
+  {
+    name: 'Election Categories',
+    layout: '/admin',
+    path: '/election-categories',
+    icon: <Icon as={MdOutlineLocalPolice} width="20px" height="20px" color="#082463" />,
+    component: <ElectionsCategory />,
   },
   {
     name: 'Sign In',

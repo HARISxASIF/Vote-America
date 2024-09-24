@@ -14,7 +14,7 @@ import {
 import addElection from '../../../../action/Election-API/addElections'; // Import the addElection function
 import { updateElection } from '../../../../action/Election-API/updateElection'; // Import the updateElection function
 
-const ElectionModal = ({ isOpen, onClose, onSuccess, selectedElection }) => {
+const ElectionCategoryModal = ({ isOpen, onClose, onSuccess, selectedElection }) => {
   const [name, setName] = useState('');
   const [image, setImage] = useState(null);
   const [icon, setIcon] = useState(null);
@@ -121,4 +121,4 @@ const ElectionModal = ({ isOpen, onClose, onSuccess, selectedElection }) => {
   );
 };
 
-export default ElectionModal;
+export default ElectionCategoryModal;
