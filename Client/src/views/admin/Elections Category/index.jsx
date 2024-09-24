@@ -1,23 +1,23 @@
 import React, { useEffect, useState } from 'react';
 import { Box, Button, Flex } from '@chakra-ui/react';
-import { fetchElections } from '../../../action/Election-API/getElection';
-import ElectionTable from './components/ElectionTable';
-import ElectionModal from './components/ElectionModal'; // Import the ElectionModal
-import { updateElection } from '../../../action/Election-API/updateElection'; // Import the update function
+import { fetchElectionsCategory } from '../../../action/ElectionsCategory-API/getElectionCategory';
+import ElectionCategoryTable from './components/ElectionCategoryTable';
+import ElectionCategoryModal from './components/ElectionCategoryModal'; // Import the ElectionModal
+// import { updateElection } from '../../../action/Election-API/updateElection'; // Import the update function
 
-const ElectionsData = () => {
-  const [elections, setElections] = useState([]);
+const ElectionsCategoryData = () => {
+  const [electionsCat, setElectionsCat] = useState([]);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedElection, setSelectedElection] = useState(null);
   const token = localStorage.getItem('authToken');
 
   const getElections = async () => {
     try {
-      const data = await fetchElections();
-      console.log('Fetched Elections:', data);
-      setElections(data.elections);
+      const data = await fetchElectionsCategory();
+      console.log('Fetched Elections Category:', data);
+      setElectionsCat(data.electionCategories);
     } catch (error) {
-      console.error('Failed to fetch elections:', error);
+      console.error('Failed to fetch elections category:', error);
     }
   };
 
@@ -71,13 +71,13 @@ const ElectionsData = () => {
           </Button>
         </Box>
       </Flex>
-      <ElectionTable 
-        elections={elections} 
-        onEdit={handleEdit} 
+      <ElectionCategoryTable 
+        electionsCat={electionsCat} 
+        // onEdit={handleEdit} 
         onDelete={getElections} // Pass onDelete function to refresh list after deletion
         token={token} // Pass the token for authorization
       />
-      <ElectionModal
+      <ElectionCategoryModal
         isOpen={isModalOpen}
         onClose={() => {
           setIsModalOpen(false);
@@ -90,4 +90,4 @@ const ElectionsData = () => {
   );
 };
 
-export default ElectionsData;
+export default ElectionsCategoryData;
