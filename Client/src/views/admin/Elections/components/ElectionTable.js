@@ -47,8 +47,8 @@ const ElectionTable = ({ elections, onEdit, onDelete, token }) => {
           {elections.map((election, index) => (
             <Tr key={index}>
               <Td>{election.name}</Td>
-              <Td><Image src={election.image} alt={`${election.name} image`} boxSize="50px" borderRadius="10px" /></Td>
-              <Td><Image src={election.icon} alt={`${election.name} icon`} boxSize="50px" borderRadius="10px" /></Td>
+              <Td><Image src={election.image} alt={`${election.name} image`} boxSize="50px" borderRadius="10px" objectFit="cover" /></Td>
+              <Td><Image src={election.icon} alt={`${election.name} icon`} boxSize="50px" borderRadius="10px" objectFit="cover" /></Td>
               <Td isNumeric>
                 <button onClick={() => onEdit(election)}>
                   <Icon as={TbEdit} />

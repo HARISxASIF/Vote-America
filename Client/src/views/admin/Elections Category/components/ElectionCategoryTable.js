@@ -4,7 +4,7 @@ import { TbEdit } from "react-icons/tb";
 import { MdOutlineDeleteOutline } from "react-icons/md";
 import deleteElectionCategory from '../../../../action/ElectionsCategory-API/deleteElectionCategory';
 
-const ElectionCategoryTable = ({ electionsCat, onEdit, onDelete, token }) => {
+const ElectionCategoryTable = ({ electionsCat, onEdit,parentElections, onDelete, token }) => {
 
   const [isError, setIsError] = useState(false);
   
@@ -23,8 +23,13 @@ const ElectionCategoryTable = ({ electionsCat, onEdit, onDelete, token }) => {
     }
   };
 
+  const getParentElectionName = (electionId) => {
+    const parentElection = parentElections.find(e => e._id === electionId);
+    return parentElection ? parentElection.name : 'N/A'; // Return 'N/A' if not found
+  };
+
   return (
-    <TableContainer position="relative" top="80px">
+    <TableContainer position="relative" top="80px" className='categoryTable' overflowX="visible" overflowY="visible">
       {isError && (
          <Alert marginBottom="20px" status='success' variant='left-accent'>
          <AlertIcon />
@@ -38,8 +43,8 @@ const ElectionCategoryTable = ({ electionsCat, onEdit, onDelete, token }) => {
         <Thead>
           <Tr>
             <Th>NAME</Th>
-            <Th>Image</Th>
-            <Th>Icon</Th>
+            <Th>Description</Th>
+            <Th padding="0.75rem 0rem">Image</Th>
             <Th>Election Category</Th>
             <Th isNumeric>ACTIONS</Th>
           </Tr>
@@ -49,12 +54,12 @@ const ElectionCategoryTable = ({ electionsCat, onEdit, onDelete, token }) => {
             <Tr key={index}>
               <Td>{electionCat.name}</Td>
               <Td>{electionCat.description}</Td>
-              <Td><Image src={electionCat.image} alt={`${electionCat.name} image`} boxSize="50px" borderRadius="10px" /></Td>
-              <Td>{electionCat.election_id}</Td>
+              <Td padding="15px 0px"><Image src={electionCat.image} alt={`${electionCat.name} image`} boxSize="50px" borderRadius="10px" objectFit="cover"/></Td>
+              <Td>{getParentElectionName(electionCat.election_id)}</Td> {/* Get parent election name */}
               <Td isNumeric>
-                {/* <button onClick={() => onEdit(election)}>
+                <button onClick={() => onEdit(electionCat)}>
                   <Icon as={TbEdit} />
-                </button> */}
+                </button>
                 <button 
                   style={{ marginLeft: "10px" }}
                   onClick={() => handleDelete(electionCat._id)} // Handle delete
@@ -71,3 +76,4 @@ const ElectionCategoryTable = ({ electionsCat, onEdit, onDelete, token }) => {
 };
 
 export default ElectionCategoryTable;
+

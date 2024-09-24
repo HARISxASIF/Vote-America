@@ -82,6 +82,7 @@ const ElectionModal = ({ isOpen, onClose, onSuccess, selectedElection }) => {
 
             <FormLabel mt="15px">Election Image</FormLabel>
             <Input
+              pt="5px"
               type="file"
               accept="image/*"
               onChange={(e) => setImage(e.target.files[0])}
@@ -90,6 +91,7 @@ const ElectionModal = ({ isOpen, onClose, onSuccess, selectedElection }) => {
 
             <FormLabel mt="15px">Election Icon</FormLabel>
             <Input
+              pt="5px"
               type="file"
               accept="image/*"
               onChange={(e) => setIcon(e.target.files[0])}

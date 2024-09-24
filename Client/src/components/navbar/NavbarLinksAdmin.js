@@ -274,7 +274,7 @@ export default function HeaderLinks(props) {
           position="relative"
           zIndex="999"
         >
-          <Flex w="100%" mb="0px">
+          {/* <Flex w="100%" mb="0px">
             <Text
               ps="20px"
               pt="16px"
@@ -288,7 +288,7 @@ export default function HeaderLinks(props) {
             >
               👋&nbsp; Hey, Admin
             </Text>
-          </Flex>
+          </Flex> */}
           <Flex flexDirection="column" p="10px">
             {/* <MenuItem
               _hover={{ bg: 'none' }}

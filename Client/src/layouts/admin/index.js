@@ -151,10 +151,10 @@ export default function Dashboard(props) {
             {getRoute() ? (
               <Box
                 mx="auto"
-                p={{ base: '20px', md: '30px' }}
-                pe="20px"
                 minH="100vh"
-                pt="50px"
+                className='mainAdminBox'
+                padding="30px 10px 120px 25px"
+                overflowY="hidden"
               >
                 <Routes>
                   {getRoutes(routes)}
