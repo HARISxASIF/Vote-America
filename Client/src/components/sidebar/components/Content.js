@@ -4,7 +4,7 @@ import {
   MdLock,
 } from 'react-icons/md';
 
-import { useNavigate } from 'react-router-dom';
+
 
 //   Custom components
 import Brand from "components/sidebar/components/Brand";
@@ -17,13 +17,9 @@ import React from "react";
 
 function SidebarContent(props) {
 
-  const navigate = useNavigate();
+  
 
-  // Logout Function
-  const handleLogout = () => {
-  localStorage.removeItem('authToken');
-  navigate('/auth'); // Redirect to login
-  };
+
 
   const { routes } = props;
   // SIDEBAR
@@ -33,7 +29,7 @@ function SidebarContent(props) {
       <Stack direction='column' mb='auto' mt='8px'>
         <Box ps='20px' pe={{ md: "16px", "2xl": "1px" }}>
           <Links routes={routes} />
-          <Button  
+          {/* <Button  
           onClick={handleLogout}
           bg="#082463"
           color="#fff"
@@ -46,7 +42,7 @@ function SidebarContent(props) {
           >
             <Icon as={MdLock} width="20px" height="20px" color="#fff" marginRight="7px" />
             Log Out
-          </Button>
+          </Button> */}
         </Box>
       </Stack>
 

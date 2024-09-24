@@ -65,7 +65,6 @@ const ElectionsData = () => {
             _focus={{ bg: '#082463' }}
             position="relative"
             top="100px"
-            zIndex="999"
           >
             Add Election +
           </Button>

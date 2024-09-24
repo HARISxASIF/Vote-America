@@ -26,7 +26,12 @@ import { MdNotificationsNone, MdInfoOutline } from 'react-icons/md';
 import { IoMdMoon, IoMdSunny } from 'react-icons/io';
 import { FaEthereum } from 'react-icons/fa';
 import routes from 'routes';
+import { useNavigate } from 'react-router-dom';
 export default function HeaderLinks(props) {
+
+  
+
+
   const { secondary } = props;
   const { colorMode, toggleColorMode } = useColorMode();
   // Chakra Color Mode
@@ -43,6 +48,15 @@ export default function HeaderLinks(props) {
     '14px 17px 40px 4px rgba(112, 144, 176, 0.06)',
   );
   const borderButton = useColorModeValue('secondaryGray.500', 'whiteAlpha.200');
+
+  const navigate = useNavigate();
+  // Logout Function
+  const handleLogout = () => {
+    localStorage.removeItem('authToken');
+    navigate('/auth'); // Redirect to login
+    };
+
+
   return (
     <Flex
       w={{ sm: '100%', md: 'auto' }}
@@ -243,7 +257,7 @@ export default function HeaderLinks(props) {
           <Avatar
             _hover={{ cursor: 'pointer' }}
             color="white"
-            name="Adela Parkson"
+            name="Harry Belgo"
             bg="#11047A"
             size="sm"
             w="40px"
@@ -257,6 +271,8 @@ export default function HeaderLinks(props) {
           borderRadius="20px"
           bg={menuBg}
           border="none"
+          position="relative"
+          zIndex="999"
         >
           <Flex w="100%" mb="0px">
             <Text
@@ -270,11 +286,11 @@ export default function HeaderLinks(props) {
               fontWeight="700"
               color={textColor}
             >
-              👋&nbsp; Hey, Adela
+              👋&nbsp; Hey, Admin
             </Text>
           </Flex>
           <Flex flexDirection="column" p="10px">
-            <MenuItem
+            {/* <MenuItem
               _hover={{ bg: 'none' }}
               _focus={{ bg: 'none' }}
               borderRadius="8px"
@@ -289,7 +305,7 @@ export default function HeaderLinks(props) {
               px="14px"
             >
               <Text fontSize="sm">Newsletter Settings</Text>
-            </MenuItem>
+            </MenuItem> */}
             <MenuItem
               _hover={{ bg: 'none' }}
               _focus={{ bg: 'none' }}
@@ -297,7 +313,7 @@ export default function HeaderLinks(props) {
               borderRadius="8px"
               px="14px"
             >
-              <Text fontSize="sm">Log out</Text>
+              <Button onClick={handleLogout} fontSize="sm">Log out</Button>
             </MenuItem>
           </Flex>
         </MenuList>
