@@ -15,70 +15,70 @@ import {
   HStack,
   FormControl,
 } from '@chakra-ui/react';
-import addElectionCategory from '../../../../action/ElectionsCategory-API/addElectionsCategory'; // Import the addElection function
-import { updateElectionCategory } from '../../../../action/ElectionsCategory-API/updateElectionCategory'; // Import the updateElection function
-import Swal from 'sweetalert2';
+import addElectionParty from '../../../../action/ElectionsParty-API/addElectionsParty'; 
+import { updateElectionParty } from '../../../../action/ElectionsParty-API/updateElectionParty';
+import Swal from 'sweetalert2'
 
-const ElectionCategoryModal = ({ isOpen, onClose, onSuccess, selectedElectionCat, parentElections  }) => {
+const ElectionPartyModal = ({ isOpen, onClose, onSuccess, selectedElectionParty, parentElections }) => {
   const [name, setName] = useState('');
   const [description, setDescription] = useState('');
-  const [image, setImage] = useState(null);
+  const [icon, setIcon] = useState(null);
   const [election_id, setElection_id] = useState('');
-  const token = localStorage.getItem('authToken'); // Replace with your actual token
+  const token = localStorage.getItem('authToken');
 
   useEffect(() => {
-    if (selectedElectionCat) {
-      setName(selectedElectionCat.name);
-      setDescription(selectedElectionCat.description);
-      setImage(null);
-      setElection_id(selectedElectionCat.election_id);
+    if (selectedElectionParty) {
+      setName(selectedElectionParty.name);
+      setDescription(selectedElectionParty.description);
+      setIcon(null);
+      setElection_id(selectedElectionParty.election_id);
     } else {
-      resetForm(); // Reset form for adding a new election
+      resetForm();
     }
-  }, [selectedElectionCat, isOpen]);
+  }, [selectedElectionParty, isOpen]);
 
-  // Function to handle form submission
   const handleSubmit = async (event) => {
     event.preventDefault();
     const formData = new FormData();
     formData.append('name', name);
     formData.append('description', description);
-    formData.append('image', image);
+    formData.append('icon', icon);
     formData.append('election_id', election_id);
 
     try {
-      if (selectedElectionCat) {
-        await updateElectionCategory(selectedElectionCat._id, name,description, image, election_id, token); // Update election
+      if (selectedElectionParty) {
+        await updateElectionParty(selectedElectionParty._id, name, description, icon, election_id, token);
         Swal.fire({
           title: "Success!",
-          text: 'Election Category updated successfully!',
+          text: 'Election Party updated successfully!',
           icon: "success",
           confirmButtonColor: "#082463",
         });
       } else {
-        await addElectionCategory(formData, token); // Add new election
+        await addElectionParty(formData, token);
         Swal.fire({
           title: "Success!",
-          text: 'Election Category added successfully!',
+          text: 'Election Party added successfully!',
           icon: "success",
           confirmButtonColor: "#082463",
         });
       }
-      onSuccess(); // Call onSuccess to refresh the election list
-      onClose(); // Close the modal
-      resetForm(); // Reset form fields
+      onSuccess();
+      onClose();
+      resetForm();
     } catch (error) {
-      selectedElectionCat ? 
+
+      selectedElectionParty ? 
       Swal.fire({
         title: "Error!",
-        text: 'Failed to update election category',
+        text: 'Failed to update election party',
         icon: "error",
         confirmButtonColor: "#f00",
       })
        : 
        Swal.fire({
         title: "Error!",
-        text: 'Failed to add election category',
+        text: 'Failed to add election party',
         icon: "error",
         confirmButtonColor: "#f00",
       })
@@ -88,7 +88,7 @@ const ElectionCategoryModal = ({ isOpen, onClose, onSuccess, selectedElectionCat
   const resetForm = () => {
     setName('');
     setDescription('');
-    setImage(null);
+    setIcon(null);
     setElection_id('');
   };
 
@@ -97,7 +97,7 @@ const ElectionCategoryModal = ({ isOpen, onClose, onSuccess, selectedElectionCat
       <ModalOverlay />
       <ModalContent maxWidth="740px">
         <ModalHeader fontSize="22px" color="#082463" fontWeight="700">
-          {selectedElectionCat ? 'Update Election Category' : 'Add Election Category'}
+          {selectedElectionParty ? 'Update Election Party' : 'Add Election Party'}
         </ModalHeader>
         <ModalCloseButton />
         <ModalBody>
@@ -112,27 +112,27 @@ const ElectionCategoryModal = ({ isOpen, onClose, onSuccess, selectedElectionCat
             />
             
             <HStack spacing="24px" alignItems="flex-start"> 
-              <FormControl>
-                <FormLabel mt="15px">Election Category Image</FormLabel>
-                <Input
-                  pt="5px"
-                  type="file"
-                  accept="image/*"
-                  onChange={(e) => setImage(e.target.files[0])}
-                  required={!selectedElectionCat} // Make it required only when adding
-                />
-              </FormControl>
+            <FormControl>
+              <FormLabel mt="15px">Election Party Icon</FormLabel>
+              <Input
+                pt="5px"
+                type="file"
+                accept="image/*"
+                onChange={(e) => setIcon(e.target.files[0])}
+                required={!selectedElectionParty}
+              />
+            </FormControl>
 
-              <FormControl>
-                <FormLabel mt="15px">Election Category</FormLabel>
-                <Select value={election_id} onChange={(e) => setElection_id(e.target.value)} placeholder='Select Election Category'>
-                    {parentElections.map((election) => (
-                      <option key={election._id} value={election._id}>
-                        {election.name} {/* Display election name */}
-                      </option>
-                    ))}
-                </Select>
-              </FormControl>
+            <FormControl>
+              <FormLabel mt="15px">Election Party</FormLabel>
+              <Select value={election_id} onChange={(e) => setElection_id(e.target.value)} placeholder='Select Election Party'>
+                {parentElections.map((election) => (
+                  <option key={election._id} value={election._id}>
+                    {election.name}
+                  </option>
+                ))}
+              </Select>
+            </FormControl>
             </HStack>
 
             <FormLabel mt="15px">Description:</FormLabel>
@@ -160,7 +160,7 @@ const ElectionCategoryModal = ({ isOpen, onClose, onSuccess, selectedElectionCat
               _focus={{ bg: '#082463' }}
               type="submit"
             >
-              {selectedElectionCat ? 'Update Election Category' : 'Add Election Category'}
+              {selectedElectionParty ? 'Update Election Party' : 'Add Election Party'}
             </Button>
           </form>
         </ModalBody>
@@ -171,4 +171,4 @@ const ElectionCategoryModal = ({ isOpen, onClose, onSuccess, selectedElectionCat
   );
 };
 
-export default ElectionCategoryModal;
+export default ElectionPartyModal;

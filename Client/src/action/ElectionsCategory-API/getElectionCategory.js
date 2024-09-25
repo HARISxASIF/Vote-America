@@ -1,9 +1,11 @@
+import BASE_URL from '../../config';
+
 export const fetchElectionsCategory = async () => {
     const token = localStorage.getItem('authToken'); // Retrieve the auth token
   
     try {
       // Replace with your API endpoint
-      const response = await fetch('http://3.17.77.207:3000/election/categories', {
+      const response = await fetch(`${BASE_URL}/election/categories`, {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json',
@@ -21,7 +23,7 @@ export const fetchElectionsCategory = async () => {
       }
   
       const data = await response.json(); // Parse the JSON data
-      console.log(data);
+      // console.log(data);
       return data;
     } catch (error) {
       console.error('Error fetching elections category:', error);

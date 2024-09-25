@@ -13,9 +13,6 @@ import routes from 'routes.js';
 // Custom Chakra theme
 export default function Dashboard(props) {
 
-
-
-
   const { ...rest } = props;
   // states and functions
   const [fixed] = useState(false);
@@ -160,7 +157,7 @@ export default function Dashboard(props) {
                   {getRoutes(routes)}
                   <Route
                     path="/"
-                    element={<Navigate to="/admin/users" replace />}
+                    element={<Navigate to="/admin/elections" replace />}
                   />
                 </Routes>
                 

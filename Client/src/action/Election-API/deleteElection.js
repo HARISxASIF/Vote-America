@@ -1,5 +1,7 @@
+import BASE_URL from '../../config';
+
 const deleteElection = async (electionId, token) => {
-    const url = `http://3.17.77.207:3000/election/delete/${electionId}`;
+    const url = `${BASE_URL}/election/delete/${electionId}`;
   
     try {
       const response = await fetch(url, {

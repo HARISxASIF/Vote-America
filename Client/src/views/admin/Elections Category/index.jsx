@@ -43,57 +43,18 @@ const ElectionsCategoryData = () => {
 
   const handleEdit = (election) => {
     setSelectedElectionCat(election); // Set the selected election
-    setIsModalOpen(true); // Open the modal
+    setIsModalOpen(true); 
   };
-
-  // const handleUpdateElection = async (name, image, icon) => {
-  //   if (selectedElection) {
-  //     try {
-  //       await updateElection(selectedElection._id, name, image, icon, token);
-  //       alert('Election updated successfully!');
-  //       getElections(); // Refresh the elections list
-  //       setIsModalOpen(false); // Close the modal
-  //     } catch (error) {
-  //       alert('Failed to update election');
-  //     }
-  //   }
-  // };
 
   return (
     <div>
-      <Flex
-        maxW="100%"
-        w="100%"
-        mx={{ base: 'auto', lg: '0px' }}
-        me="auto"
-        h="100%"
-        alignItems="center"
-        justifyContent="end"
-        className='mainBoxTable'
-      >
-        <Box>
-          <Button
-            onClick={() => setIsModalOpen(true)}
-            bg="#082463"
-            color="#fff"
-            borderRadius="5px"
-            _hover={{ bg: '#CF2B28' }}
-            _active={{ bg: '#082463' }}
-            _focus={{ bg: '#082463' }}
-            position="relative"
-            top="100px"
-            zIndex="999"
-          >
-            Add Election Category +
-          </Button>
-        </Box>
-      </Flex>
       <ElectionCategoryTable 
         electionsCat={electionsCat} 
         parentElections={parentElections} 
         onEdit={handleEdit} 
-        onDelete={getElections} // Pass onDelete function to refresh list after deletion
-        token={token} // Pass the token for authorization
+        onDelete={getElections} 
+        token={token} 
+        openModal={() => setIsModalOpen(true)}
       />
       <ElectionCategoryModal
         isOpen={isModalOpen}

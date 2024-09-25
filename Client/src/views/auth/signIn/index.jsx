@@ -131,29 +131,6 @@ function SignIn() {
           me="auto"
           mb={{ base: '20px', md: 'auto' }}
         >
-          {/* <Button
-            fontSize='sm'
-            me='0px'
-            mb='26px'
-            py='15px'
-            h='50px'
-            borderRadius='16px'
-            bg={googleBg}
-            color={googleText}
-            fontWeight='500'
-            _hover={googleHover}
-            _active={googleActive}
-            _focus={googleActive}>
-            <Icon as={FcGoogle} w='20px' h='20px' me='10px' />
-            Sign in with Google
-          </Button>
-          <Flex align='center' mb='25px'>
-            <HSeparator />
-            <Text color='gray.400' mx='14px'>
-              or
-            </Text>
-            <HSeparator />
-          </Flex> */}
           <form
             onSubmit={formik.handleSubmit}
             className="py-4 pl-6 trademark-registration-modal "
@@ -161,7 +138,7 @@ function SignIn() {
             <FormLabel
               display="flex"
               ms="4px"
-              fontSize="sm"
+              fontSize="1rem"
               fontWeight="500"
               color={textColor}
               mb="8px"
@@ -174,7 +151,7 @@ function SignIn() {
               value={formik.email}
               onChange={formik.handleChange}
               variant="auth"
-              fontSize="sm"
+              fontSize="1rem"
               ms={{ base: '0px', md: '0px' }}
               type="email"
               placeholder="Enter Your Email Address"
@@ -188,7 +165,7 @@ function SignIn() {
             <FormLabel
               display="flex"
               ms="4px"
-              fontSize="sm"
+              fontSize="1rem"
               fontWeight="500"
               color={textColor}
               mb="8px"
@@ -201,7 +178,7 @@ function SignIn() {
               value={formik.password}
               onChange={formik.handleChange}
               variant="auth"
-              fontSize="sm"
+              fontSize="1rem"
               ms={{ base: '0px', md: '0px' }}
               type="password"
               placeholder="Enter Your Email Address"
@@ -213,7 +190,7 @@ function SignIn() {
               <span className="error">{formik.errors.password}</span>
             ) : null}
             <Button
-              fontSize="sm"
+              fontSize="1rem"
               type="submit"
               variant="brand"
               fontWeight="500"

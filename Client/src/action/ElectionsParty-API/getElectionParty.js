@@ -1,11 +1,11 @@
 import BASE_URL from '../../config';
 
-export const fetchElections = async () => {
+export const fetchElectionsParty = async () => {
     const token = localStorage.getItem('authToken'); // Retrieve the auth token
   
     try {
       // Replace with your API endpoint
-      const response = await fetch(`${BASE_URL}/elections`, {
+      const response = await fetch(`${BASE_URL}/election/parties`, {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json',
@@ -23,10 +23,10 @@ export const fetchElections = async () => {
       }
   
       const data = await response.json(); // Parse the JSON data
-      // console.log(data);
+      console.log(data);
       return data;
     } catch (error) {
-      console.error('Error fetching elections:', error);
+      console.error('Error fetching elections party:', error);
       throw error; // Re-throw the error if you want to handle it further up
     }
   };

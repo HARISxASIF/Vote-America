@@ -13,6 +13,7 @@ import {
 } from '@chakra-ui/react';
 import addElection from '../../../../action/Election-API/addElections'; // Import the addElection function
 import { updateElection } from '../../../../action/Election-API/updateElection'; // Import the updateElection function
+import Swal from 'sweetalert2';
 
 const ElectionModal = ({ isOpen, onClose, onSuccess, selectedElection }) => {
   const [name, setName] = useState('');
@@ -42,16 +43,39 @@ const ElectionModal = ({ isOpen, onClose, onSuccess, selectedElection }) => {
     try {
       if (selectedElection) {
         await updateElection(selectedElection._id, name, image, icon, token); // Update election
-        alert('Election updated successfully!');
+        Swal.fire({
+          title: "Success!",
+          text: 'Election updated successfully!',
+          icon: "success",
+          confirmButtonColor: "#082463",
+        });
       } else {
         await addElection(formData, token); // Add new election
-        alert('Election added successfully!');
+        Swal.fire({
+          title: "Success!",
+          text: 'Election added successfully!',
+          icon: "success",
+          confirmButtonColor: "#082463",
+        });
       }
       onSuccess(); // Call onSuccess to refresh the election list
       onClose(); // Close the modal
       resetForm(); // Reset form fields
     } catch (error) {
-      alert(selectedElection ? 'Failed to update election' : 'Failed to add election');
+      selectedElection ? 
+      Swal.fire({
+        title: "Error!",
+        text: 'Failed to update election',
+        icon: "error",
+        confirmButtonColor: "#f00",
+      })
+       : 
+       Swal.fire({
+        title: "Error!",
+        text: 'Failed to add election',
+        icon: "error",
+        confirmButtonColor: "#f00",
+      })
     }
   };
 
@@ -64,7 +88,7 @@ const ElectionModal = ({ isOpen, onClose, onSuccess, selectedElection }) => {
   return (
     <Modal blockScrollOnMount={false} isOpen={isOpen} onClose={onClose}>
       <ModalOverlay />
-      <ModalContent>
+      <ModalContent maxWidth="650px">
         <ModalHeader fontSize="22px" color="#082463" fontWeight="700">
           {selectedElection ? 'Update Election' : 'Add Election'}
         </ModalHeader>

@@ -1,26 +1,46 @@
 import React, { useState } from 'react';
-import { TableContainer, Table, Thead, Tr, Th, Tbody, Td, Text, Icon, Image, Alert, AlertIcon } from '@chakra-ui/react';
+import { TableContainer, Table, Thead, Tr, Th, Tbody, Td, Text, Icon, Image, Alert, AlertIcon ,Flex, Box, Button} from '@chakra-ui/react';
 import { TbEdit } from "react-icons/tb";
 import { MdOutlineDeleteOutline } from "react-icons/md";
 import deleteElectionCategory from '../../../../action/ElectionsCategory-API/deleteElectionCategory';
+import Swal from 'sweetalert2';
 
-const ElectionCategoryTable = ({ electionsCat, onEdit,parentElections, onDelete, token }) => {
+const ElectionCategoryTable = ({ electionsCat, onEdit,parentElections, onDelete, token,openModal }) => {
 
   const [isError, setIsError] = useState(false);
   
   const handleDelete = async (electionCatId) => {
-    if (window.confirm('Are you sure you want to delete this election?')) {
-      const result = await deleteElectionCategory(electionCatId, token);
-      if (result.success) {
-        setIsError(true);
-        setTimeout(() => {
-          setIsError(false); // Hide alert after 3 seconds
-        }, 3000);
-        onDelete(); // Call onDelete to refresh the election list
-      } else {
-        alert(result.message);
+    Swal.fire({
+      title: "Are you sure?",
+      text: "You won't be able to revert this!",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#082463",
+      cancelButtonColor: "#f00",
+      confirmButtonText: "Yes, delete it!",
+      cancelButtonText: "Cancel",
+    }).then(async (result) => {
+      if (result.isConfirmed) {
+        const response = await deleteElectionCategory(electionCatId, token); // Your delete function call
+        if (response.success) {
+          Swal.fire({
+            title: "Success!",
+            text: response.message,
+            icon: "success",
+            confirmButtonColor: "#082463",
+          });
+          onDelete(); // Call onDelete to refresh the list
+        } else {
+          Swal.fire({
+            title: "Error!",
+            text: response.message,
+            icon: "error",
+            confirmButtonColor: "#f00",
+          });
+        }
       }
-    }
+    });
+    
   };
 
   const getParentElectionName = (electionId) => {
@@ -36,16 +56,40 @@ const ElectionCategoryTable = ({ electionsCat, onEdit,parentElections, onDelete,
          Election Deleted Successfully!
        </Alert>
       )}
+      <Flex
+        maxW="100%"
+        w="100%"
+        mx={{ base: 'auto', lg: '0px' }}
+        me="auto"
+        h="100%"
+        alignItems="center"
+        justifyContent="end"
+        className='mainBoxTable'
+      >
+        <Box>
+          <Button
+            onClick={openModal}
+            bg="#082463"
+            color="#fff"
+            borderRadius="5px"
+            _hover={{ bg: '#CF2B28' }}
+            _active={{ bg: '#082463' }}
+            _focus={{ bg: '#082463' }}
+          >
+            Add Election Category +
+          </Button>
+        </Box>
+      </Flex>
       <Text color="#082463" fontWeight="600" fontSize="22px" mb="15px">
         Elections Category List
       </Text>
       <Table variant="striped" colorScheme="blackAlpha">
         <Thead>
           <Tr>
-            <Th>NAME</Th>
-            <Th>Description</Th>
+            <Th>NAME</Th>           
             <Th padding="0.75rem 0rem">Image</Th>
             <Th>Election Category</Th>
+            <Th>Description</Th>
             <Th isNumeric>ACTIONS</Th>
           </Tr>
         </Thead>
@@ -53,9 +97,23 @@ const ElectionCategoryTable = ({ electionsCat, onEdit,parentElections, onDelete,
           {electionsCat.map((electionCat, index) => (
             <Tr key={index}>
               <Td>{electionCat.name}</Td>
-              <Td>{electionCat.description}</Td>
               <Td padding="15px 0px"><Image src={electionCat.image} alt={`${electionCat.name} image`} boxSize="50px" borderRadius="10px" objectFit="cover"/></Td>
-              <Td>{getParentElectionName(electionCat.election_id)}</Td> {/* Get parent election name */}
+              <Td>{getParentElectionName(electionCat.election_id)}</Td>              
+              <Td>
+              <Text                   
+                  sx={{
+                    display: '-webkit-box',
+                    overflow: 'hidden',
+                    WebkitBoxOrient: 'vertical',
+                    WebkitLineClamp: '4',
+                    whiteSpace: 'normal',
+                    wordBreak:"break-word"
+                  }}
+                >
+                {electionCat.description}
+                </Text>
+                </Td>
+              
               <Td isNumeric>
                 <button onClick={() => onEdit(electionCat)}>
                   <Icon as={TbEdit} />

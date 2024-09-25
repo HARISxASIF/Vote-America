@@ -1,3 +1,5 @@
+import BASE_URL from '../../config';
+
 export const updateElection = async (id, name, image, icon, token) => {
     const formData = new FormData();
     formData.append('name', name);
@@ -5,7 +7,7 @@ export const updateElection = async (id, name, image, icon, token) => {
     formData.append('icon', icon);
   
     try {
-      const response = await fetch(`http://3.17.77.207:3000/election/update/${id}`, {
+      const response = await fetch(`${BASE_URL}/election/update/${id}`, {
         method: 'POST',
         headers: {
           'Authorization': `${token}`,

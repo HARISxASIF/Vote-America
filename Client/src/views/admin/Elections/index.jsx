@@ -45,36 +45,12 @@ const ElectionsData = () => {
 
   return (
     <div>
-      <Flex
-        maxW="100%"
-        w="100%"
-        mx={{ base: 'auto', lg: '0px' }}
-        me="auto"
-        h="100%"
-        alignItems="center"
-        justifyContent="end"
-      >
-        <Box>
-          <Button
-            onClick={() => setIsModalOpen(true)}
-            bg="#082463"
-            color="#fff"
-            borderRadius="5px"
-            _hover={{ bg: '#CF2B28' }}
-            _active={{ bg: '#082463' }}
-            _focus={{ bg: '#082463' }}
-            position="relative"
-            top="100px"
-          >
-            Add Election +
-          </Button>
-        </Box>
-      </Flex>
       <ElectionTable 
         elections={elections} 
         onEdit={handleEdit} 
         onDelete={getElections} // Pass onDelete function to refresh list after deletion
         token={token} // Pass the token for authorization
+        openModal={() => setIsModalOpen(true)}
       />
       <ElectionModal
         isOpen={isModalOpen}

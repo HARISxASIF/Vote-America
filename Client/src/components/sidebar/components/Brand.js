@@ -4,7 +4,7 @@ import React from "react";
 import { Flex, useColorModeValue } from "@chakra-ui/react";
 
 // Custom components
-import { HorizonLogo } from "components/icons/Icons";
+// import { HorizonLogo } from "components/icons/Icons";  
 import { HSeparator } from "components/separator/Separator";
 import LogoImage  from "../../../assets/img/layout/brandLogo.svg";
 
@@ -20,10 +20,9 @@ export function SidebarBrand() {
       alt=""
       style={{
         height: '100%',
-        background: '#fff',
       }}
       />
-      <HSeparator mb='20px' />
+      <HSeparator mb='20px' mt="10px" />
     </Flex>
   );
 }

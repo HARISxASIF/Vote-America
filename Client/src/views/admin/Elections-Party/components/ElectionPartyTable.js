@@ -2,14 +2,12 @@ import React, { useState } from 'react';
 import { TableContainer, Table, Thead, Tr, Th, Tbody, Td, Text, Icon, Image, Alert, AlertIcon, Flex, Box, Button } from '@chakra-ui/react';
 import { TbEdit } from "react-icons/tb";
 import { MdOutlineDeleteOutline } from "react-icons/md";
-import deleteElection from '../../../../action/Election-API/deleteElection';
-import Swal from 'sweetalert2';
+import deleteElectionParty from '../../../../action/ElectionsParty-API/deleteElectionParty';
+import Swal from 'sweetalert2'
 
-const ElectionTable = ({ elections, onEdit, onDelete, token ,openModal }) => {
-
-  const [isError, setIsError] = useState(false);
+const ElectionPartyTable = ({ electionsParty, onEdit, parentElections, onDelete, token,openModal }) => {
   
-  const handleDelete = async (electionId) => {
+  const handleDelete = async (partyId) => {
     Swal.fire({
       title: "Are you sure?",
       text: "You won't be able to revert this!",
@@ -21,7 +19,7 @@ const ElectionTable = ({ elections, onEdit, onDelete, token ,openModal }) => {
       cancelButtonText: "Cancel",
     }).then(async (result) => {
       if (result.isConfirmed) {
-        const result = await deleteElection(electionId, token); // Your delete function call
+        const result = await deleteElectionParty(partyId, token); // Your delete function call
         if (result.success) {
           Swal.fire({
             title: "Success!",
@@ -29,7 +27,7 @@ const ElectionTable = ({ elections, onEdit, onDelete, token ,openModal }) => {
             icon: "success",
             confirmButtonColor: "#082463",
           });
-          onDelete(); // Call onDelete to refresh the election list
+          onDelete(); // Call onDelete to refresh the list
         } else {
           Swal.fire({
             title: "Error!",
@@ -43,14 +41,13 @@ const ElectionTable = ({ elections, onEdit, onDelete, token ,openModal }) => {
     
   };
 
+  const getParentElectionName = (electionId) => {
+    const parentElection = parentElections.find(e => e._id === electionId);
+    return parentElection ? parentElection.name : 'N/A';
+  };
+
   return (
-    <TableContainer position="relative" top="80px">
-      {isError && (
-         <Alert marginBottom="20px" status='success' variant='left-accent'>
-         <AlertIcon />
-         Election Deleted Successfully!
-       </Alert>
-      )}
+    <TableContainer position="relative" top="80px" className='partyTable'>
       <Flex
         maxW="100%"
         w="100%"
@@ -59,6 +56,7 @@ const ElectionTable = ({ elections, onEdit, onDelete, token ,openModal }) => {
         h="100%"
         alignItems="center"
         justifyContent="end"
+        className='mainBoxTable'
       >
         <Box>
           <Button
@@ -70,35 +68,50 @@ const ElectionTable = ({ elections, onEdit, onDelete, token ,openModal }) => {
             _active={{ bg: '#082463' }}
             _focus={{ bg: '#082463' }}
           >
-            Add Election +
+            Add Election Party +
           </Button>
         </Box>
       </Flex>
       <Text color="#082463" fontWeight="600" fontSize="22px" mb="15px">
-        Elections List
+        Elections Party List
       </Text>
       <Table variant="striped" colorScheme="blackAlpha">
         <Thead>
           <Tr>
             <Th>NAME</Th>
-            <Th>Image</Th>
             <Th>Icon</Th>
+            <Th>Election Party</Th>
+            <Th>Description</Th>
             <Th isNumeric>ACTIONS</Th>
           </Tr>
         </Thead>
         <Tbody>
-          {elections.map((election, index) => (
+          {electionsParty.map((party, index) => (
             <Tr key={index}>
-              <Td>{election.name}</Td>
-              <Td><Image src={election.image} alt={`${election.name} image`} boxSize="50px" borderRadius="10px" objectFit="cover" /></Td>
-              <Td><Image src={election.icon} alt={`${election.name} icon`} boxSize="50px" borderRadius="10px" objectFit="cover" /></Td>
+              <Td>{party.name}</Td>
+              <Td ><Image src={party.icon} alt={`${party.name} icon`} boxSize="50px" borderRadius="10px" objectFit="cover"/></Td>
+              <Td>{getParentElectionName(party.election_id)}</Td>
+              <Td>
+                <Text                   
+                  sx={{
+                    display: '-webkit-box',
+                    overflow: 'hidden',
+                    WebkitBoxOrient: 'vertical',
+                    WebkitLineClamp: '4',
+                    whiteSpace: 'normal',
+                    wordBreak:"break-word"
+                  }}
+                >
+                  {party.description}
+                </Text>
+              </Td>
               <Td isNumeric>
-                <button onClick={() => onEdit(election)}>
+                <button onClick={() => onEdit(party)}>
                   <Icon as={TbEdit} />
                 </button>
                 <button 
                   style={{ marginLeft: "10px" }}
-                  onClick={() => handleDelete(election._id)} // Handle delete
+                  onClick={() => handleDelete(party._id)} 
                 >
                   <Icon as={MdOutlineDeleteOutline} />
                 </button>
@@ -111,4 +124,4 @@ const ElectionTable = ({ elections, onEdit, onDelete, token ,openModal }) => {
   );
 };
 
-export default ElectionTable;
+export default ElectionPartyTable;

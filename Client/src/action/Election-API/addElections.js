@@ -1,7 +1,8 @@
-// addElection.js
+import BASE_URL from '../../config';
+
 const addElection = async (formData, token) => {
     try {
-      const response = await fetch('http://3.17.77.207:3000/election/store', {
+      const response = await fetch(`${BASE_URL}/election/store`, {
         method: 'POST',
         headers: {
           'Authorization': `${token}`, // Replace with your actual token if needed
