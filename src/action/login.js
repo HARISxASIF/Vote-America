@@ -1,7 +1,9 @@
+import BASE_URL from '../../config';
 export async function login(variables) {
   const bodyData = variables;
+
   try {
-    const response = await fetch('http://3.17.77.207:3000/login', {
+    const response = await fetch(`${BASE_URL}/login`, {
       method: 'POST',
       headers: {
         // Fixed the casing to `headers`
