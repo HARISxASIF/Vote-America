@@ -19,7 +19,7 @@ import DefaultAuth from 'layouts/auth/Default';
 import illustration from 'assets/img/layout/logoBanner.png';
 import * as Yup from 'yup';
 import { useNavigate } from 'react-router-dom';
-import { login } from 'action/login';
+import { login } from 'action/Login API/login';
 import {
   Alert,
   AlertIcon,
