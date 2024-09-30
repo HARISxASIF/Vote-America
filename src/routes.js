@@ -2,31 +2,34 @@ import React from 'react';
 
 import { Icon } from '@chakra-ui/react';
 import {
-  // MdPerson,
+  MdPerson,
   MdLock,
   MdOutlineLocalPolice ,
 } from 'react-icons/md';
 import { BiCategory } from "react-icons/bi";
 import { IoRibbon } from "react-icons/io5";
+import { FaUserTie } from "react-icons/fa";
+
 
 // Admin Imports
-// import Users from 'views/admin/users';
+import Users from 'views/admin/User';
 import Elections from 'views/admin/Elections';
 import ElectionsCategory from 'views/admin/Elections Category';
 import ElectionsParty from 'views/admin/Elections-Party';
+import Candidates from 'views/admin/Candidates';
 
 
 // Auth Imports
 import SignInCentered from 'views/auth/signIn';
 
 const routes = [
-  // {
-  //   name: 'Users',
-  //   layout: '/admin',
-  //   path: '/users',
-  //   icon: <Icon as={MdPerson} width="20px" height="20px" color="#082463" />,
-  //   component: <Users />,
-  // },
+  {
+    name: 'Users',
+    layout: '/admin',
+    path: '/users',
+    icon: <Icon as={MdPerson} width="20px" height="20px" color="#082463" />,
+    component: <Users />,
+  },
   {
     name: 'Elections',
     layout: '/admin',
@@ -55,6 +58,13 @@ const routes = [
     icon: <Icon as={MdLock} width="20px" height="20px" color="#082463" />,
     component: <SignInCentered />,
     isHidden: true,
+  },
+  {
+    name: 'Candidates',
+    layout: '/admin',
+    path: '/candidates',
+    icon: <Icon as={FaUserTie} width="20px" height="20px" color="#082463" />,
+    component: <Candidates />,
   },
 ];
 

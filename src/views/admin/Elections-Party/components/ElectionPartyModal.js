@@ -82,6 +82,8 @@ const ElectionPartyModal = ({ isOpen, onClose, onSuccess, selectedElectionParty,
         icon: "error",
         confirmButtonColor: "#f00",
       })
+      onClose();
+      resetForm();
     }
   };
 

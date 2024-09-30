@@ -82,6 +82,8 @@ const ElectionCategoryModal = ({ isOpen, onClose, onSuccess, selectedElectionCat
         icon: "error",
         confirmButtonColor: "#f00",
       })
+      onClose();
+      resetForm();
     }
   };
 

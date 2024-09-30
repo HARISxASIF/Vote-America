@@ -76,6 +76,8 @@ const ElectionModal = ({ isOpen, onClose, onSuccess, selectedElection }) => {
         icon: "error",
         confirmButtonColor: "#f00",
       })
+      onClose();
+      resetForm();
     }
   };
 
