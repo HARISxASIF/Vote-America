@@ -9,17 +9,41 @@ import {
   // extendTheme
 } from '@chakra-ui/react';
 import initialTheme from './theme/theme'; //  { themeGreen }
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 // Chakra imports
+
+
+function useAuth() {
+  const [isAuthenticated, setIsAuthenticated] = useState(!!localStorage.getItem('authToken'));
+
+  useEffect(() => {
+    // Function to synchronize state with local storage
+    const handleStorageChange = () => {
+      setIsAuthenticated(!!localStorage.getItem('authToken'));
+    };
+
+    window.addEventListener('storage', handleStorageChange);
+
+    return () => {
+      window.removeEventListener('storage', handleStorageChange);
+    };
+  }, []);
+
+  return [isAuthenticated, setIsAuthenticated];
+}
+
+
 
 export default function Main() {
   // eslint-disable-next-line
   const [currentTheme, setCurrentTheme] = useState(initialTheme);
-  const isAuthenticated = !!localStorage.getItem('authToken'); // Check if user is authenticated
+  const [isAuthenticated, setIsAuthenticated] = useAuth(); // Use the custom hook
+
+
   return (
     <ChakraProvider theme={currentTheme}>
       <Routes>
-        <Route path="auth/*" element={<AuthLayout />} />
+        <Route path="auth/*" element={<AuthLayout setIsAuthenticated={setIsAuthenticated} />} />
         <Route
           path="admin/*"
           element={

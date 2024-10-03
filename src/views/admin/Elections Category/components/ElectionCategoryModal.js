@@ -30,7 +30,7 @@ const ElectionCategoryModal = ({ isOpen, onClose, onSuccess, selectedElectionCat
     if (selectedElectionCat) {
       setName(selectedElectionCat.name);
       setDescription(selectedElectionCat.description);
-      setImage(null);
+      setImage(selectedElectionCat.image);
       setElection_id(selectedElectionCat.election_id);
     } else {
       resetForm(); // Reset form for adding a new election
@@ -43,12 +43,14 @@ const ElectionCategoryModal = ({ isOpen, onClose, onSuccess, selectedElectionCat
     const formData = new FormData();
     formData.append('name', name);
     formData.append('description', description);
-    formData.append('image', image);
+    if (image) {
+      formData.append('image', image);
+    }
     formData.append('election_id', election_id);
 
     try {
       if (selectedElectionCat) {
-        await updateElectionCategory(selectedElectionCat._id, name,description, image, election_id, token); // Update election
+        await updateElectionCategory(selectedElectionCat._id, formData, token); // Update election
         Swal.fire({
           title: "Success!",
           text: 'Election Category updated successfully!',

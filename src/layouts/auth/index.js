@@ -9,27 +9,33 @@ import { Box, useColorModeValue } from '@chakra-ui/react';
 import { SidebarContext } from 'contexts/SidebarContext';
 
 // Custom Chakra theme
-export default function Auth() {
+export default function Auth({ setIsAuthenticated }) {
   // states and functions
   const [toggleSidebar, setToggleSidebar] = useState(false);
   // functions for changing the states from components
   const getRoute = () => {
     return window.location.pathname !== '/auth/full-screen-maps';
   };
-  const getRoutes = (routes) => {
-    return routes.map((route, key) => {
-      if (route.layout === '/auth') {
-        return (
-          <Route path={`${route.path}`} element={route.component} key={key} />
-        );
-      }
-      if (route.collapse) {
-        return getRoutes(route.items);
-      } else {
-        return null;
-      }
-    });
-  };
+const getRoutes = (routes) => {
+  return routes.map((route, key) => {
+    if (route.layout === '/auth') {
+      const Component = route.component; // Now Component is a function, not an object
+      return (
+        <Route
+          path={`${route.path}`}
+          element={<Component setIsAuthenticated={setIsAuthenticated} />}
+          key={key}
+        />
+      );
+    }
+    if (route.collapse) {
+      return getRoutes(route.items);
+    } else {
+      return null;
+    }
+  });
+};
+  
   const authBg = useColorModeValue('white', 'navy.900');
   document.documentElement.dir = 'ltr';
   return (

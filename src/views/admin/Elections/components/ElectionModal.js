@@ -11,38 +11,44 @@ import {
   Input,
   Button,
 } from '@chakra-ui/react';
-import addElection from '../../../../action/Election-API/addElections'; // Import the addElection function
-import { updateElection } from '../../../../action/Election-API/updateElection'; // Import the updateElection function
+import addElection from '../../../../action/Election-API/addElections';
+import { updateElection } from '../../../../action/Election-API/updateElection';
 import Swal from 'sweetalert2';
 
 const ElectionModal = ({ isOpen, onClose, onSuccess, selectedElection }) => {
   const [name, setName] = useState('');
   const [image, setImage] = useState(null);
   const [icon, setIcon] = useState(null);
-  const token = localStorage.getItem('authToken'); // Replace with your actual token
+  const token = localStorage.getItem('authToken');
 
   useEffect(() => {
     if (selectedElection) {
       setName(selectedElection.name);
-      // Reset image and icon when opening the modal
-      setImage(null);
-      setIcon(null);
+      // Set existing image and icon if available
+      setImage(selectedElection.image);
+      setIcon(selectedElection.icon);
     } else {
       resetForm(); // Reset form for adding a new election
     }
   }, [selectedElection, isOpen]);
 
-  // Function to handle form submission
   const handleSubmit = async (event) => {
     event.preventDefault();
     const formData = new FormData();
     formData.append('name', name);
-    formData.append('image', image);
-    formData.append('icon', icon);
+    
+    // Only append image if a new one has been selected
+    if (image && typeof image !== 'string') {
+      formData.append('image', image);
+    }
+    // Only append icon if a new one has been selected
+    if (icon && typeof icon !== 'string') {
+      formData.append('icon', icon);
+    }
 
     try {
       if (selectedElection) {
-        await updateElection(selectedElection._id, name, image, icon, token); // Update election
+        await updateElection(selectedElection._id, formData, token);
         Swal.fire({
           title: "Success!",
           text: 'Election updated successfully!',
@@ -50,7 +56,7 @@ const ElectionModal = ({ isOpen, onClose, onSuccess, selectedElection }) => {
           confirmButtonColor: "#082463",
         });
       } else {
-        await addElection(formData, token); // Add new election
+        await addElection(formData, token);
         Swal.fire({
           title: "Success!",
           text: 'Election added successfully!',
@@ -58,24 +64,16 @@ const ElectionModal = ({ isOpen, onClose, onSuccess, selectedElection }) => {
           confirmButtonColor: "#082463",
         });
       }
-      onSuccess(); // Call onSuccess to refresh the election list
-      onClose(); // Close the modal
-      resetForm(); // Reset form fields
+      onSuccess();
+      onClose();
+      resetForm();
     } catch (error) {
-      selectedElection ? 
       Swal.fire({
         title: "Error!",
-        text: 'Failed to update election',
+        text: selectedElection ? 'Failed to update election' : 'Failed to add election',
         icon: "error",
         confirmButtonColor: "#f00",
-      })
-       : 
-       Swal.fire({
-        title: "Error!",
-        text: 'Failed to add election',
-        icon: "error",
-        confirmButtonColor: "#f00",
-      })
+      });
       onClose();
       resetForm();
     }

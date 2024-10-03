@@ -86,6 +86,7 @@ const UserModal = ({ isOpen, onClose, onSuccess, selectedUser }) => {
               >
                 <option value="Pending">Pending</option>
                 <option value="Approved">Approved</option>
+                <option value="Rejected">Rejected</option>
               </Select>
             </FormControl>
 
@@ -98,6 +99,8 @@ const UserModal = ({ isOpen, onClose, onSuccess, selectedUser }) => {
               >
                 <option value="Pending">Pending</option>
                 <option value="Approved">Approved</option>
+                <option value="Rejected">Rejected</option>
+
               </Select>
             </FormControl>
 

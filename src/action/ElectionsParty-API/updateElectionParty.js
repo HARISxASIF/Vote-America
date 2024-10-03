@@ -1,11 +1,6 @@
 import BASE_URL from '../../config';
 
-export const updateElectionParty = async (id, name,description, icon, election_id, token) => {
-    const formData = new FormData();
-    formData.append('name', name);
-    formData.append('description', description);
-    formData.append('icon', icon);
-    formData.append('election_id', election_id);
+export const updateElectionParty = async (id, formData, token) => {
   
     try {
       const response = await fetch(`${BASE_URL}/election/party/update/${id}`, {

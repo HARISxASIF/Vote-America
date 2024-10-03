@@ -56,7 +56,7 @@ const routes = [
     layout: '/auth',
     path: '/sign-in',
     icon: <Icon as={MdLock} width="20px" height="20px" color="#082463" />,
-    component: <SignInCentered />,
+    component: SignInCentered ,
     isHidden: true,
   },
   {

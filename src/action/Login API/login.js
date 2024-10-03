@@ -17,7 +17,7 @@ export async function login(variables) {
       return response;
     } else {
       const data = await response.json();
-      localStorage.setItem('authToken', data.token);
+      // localStorage.setItem('authToken', data.token);
 
       return data;
     }

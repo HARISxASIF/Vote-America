@@ -30,7 +30,7 @@ const ElectionPartyModal = ({ isOpen, onClose, onSuccess, selectedElectionParty,
     if (selectedElectionParty) {
       setName(selectedElectionParty.name);
       setDescription(selectedElectionParty.description);
-      setIcon(null);
+      setIcon(selectedElectionParty.icon);
       setElection_id(selectedElectionParty.election_id);
     } else {
       resetForm();
@@ -42,12 +42,14 @@ const ElectionPartyModal = ({ isOpen, onClose, onSuccess, selectedElectionParty,
     const formData = new FormData();
     formData.append('name', name);
     formData.append('description', description);
-    formData.append('icon', icon);
+    if (icon && typeof icon !== 'string') {
+      formData.append('icon', icon);
+    }
     formData.append('election_id', election_id);
 
     try {
       if (selectedElectionParty) {
-        await updateElectionParty(selectedElectionParty._id, name, description, icon, election_id, token);
+        await updateElectionParty(selectedElectionParty._id,formData, token);
         Swal.fire({
           title: "Success!",
           text: 'Election Party updated successfully!',
