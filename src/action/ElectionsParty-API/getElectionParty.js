@@ -1,32 +1,24 @@
 import BASE_URL from '../../config';
+import { apiRequest } from '../Login API/apiRequest';
 
 export const fetchElectionsParty = async () => {
-    const token = localStorage.getItem('authToken'); // Retrieve the auth token
-  
-    try {
-      // Replace with your API endpoint
-      const response = await fetch(`${BASE_URL}/election/parties`, {
-        method: 'GET',
-        headers: {
-          'Content-Type': 'application/json',
-          Authorization: `${token}`, // Include the authorization header
-        },
-      });
-  
-      // Check if the response status is OK (200-299)
-      if (!response.ok) {
-        // Log the full response for debugging
-      const errorDetails = await response.json();
-      console.error('Error Details:', errorDetails);
+  try {
+    // Make the API request using the centralized function
+    const data = await apiRequest(`${BASE_URL}/election/parties`, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    });
 
-      throw new Error(`HTTP error! status: ${response.status}`);
-      }
-  
-      const data = await response.json(); // Parse the JSON data
-      console.log(data);
-      return data;
-    } catch (error) {
-      console.error('Error fetching elections party:', error);
-      throw error; // Re-throw the error if you want to handle it further up
-    }
-  };
+    // If the response is null (indicating a failed login due to an invalid token), return early
+    if (data === null) return null;
+
+    // Otherwise, return the data fetched from the API
+    console.log(data);
+    return data;
+  } catch (error) {
+    console.error('Error fetching election parties:', error);
+    throw error; // Re-throw the error if you want to handle it further up
+  }
+};

@@ -43,7 +43,7 @@ const ElectionCategoryModal = ({ isOpen, onClose, onSuccess, selectedElectionCat
     const formData = new FormData();
     formData.append('name', name);
     formData.append('description', description);
-    if (image) {
+    if (image && typeof image !== 'string') {
       formData.append('image', image);
     }
     formData.append('election_id', election_id);
