@@ -9,7 +9,9 @@ const addCandidate = async (formData, token) => {
         },
         body: formData,
       });
-  
+      
+    //   console.log('Full response:', response); // Check the full response for debugging
+
       const result = await response.json();
   
       if (!response.ok) {
