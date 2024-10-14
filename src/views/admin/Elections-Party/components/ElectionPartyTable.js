@@ -41,8 +41,8 @@ const ElectionPartyTable = ({ electionsParty, onEdit, parentElections, onDelete,
     
   };
 
-  const getParentElectionName = (electionId) => {
-    const parentElection = parentElections.find(e => e._id === electionId);
+  const getParentElectionName = (election_category_id) => {
+    const parentElection = parentElections.find(e => e._id === election_category_id);
     return parentElection ? parentElection.name : 'N/A';
   };
 
@@ -90,7 +90,7 @@ const ElectionPartyTable = ({ electionsParty, onEdit, parentElections, onDelete,
             <Tr key={index}>
               <Td>{party.name}</Td>
               <Td ><Image src={party.icon} alt={`${party.name} icon`} boxSize="50px" borderRadius="10px" objectFit="cover"/></Td>
-              <Td>{getParentElectionName(party.election_id)}</Td>
+              <Td>{getParentElectionName(party.election_category_id)}</Td>
               <Td>
                 <Text                   
                   sx={{

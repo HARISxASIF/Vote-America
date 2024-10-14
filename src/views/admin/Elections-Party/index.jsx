@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 // import { Box, Button, Flex } from '@chakra-ui/react';
 import { fetchElectionsParty } from '../../../action/ElectionsParty-API/getElectionParty';
-import { fetchElections } from '../../../action/Election-API/getElection';
+import  {fetchElectionsCategory} from '../../../action/ElectionsCategory-API/getElectionCategory';
 import ElectionPartyTable from './components/ElectionPartyTable';
 import ElectionPartyModal from './components/ElectionPartyModal';
 
@@ -24,8 +24,8 @@ const ElectionsPartyData = () => {
 
   const getParentElections = async () => {
     try {
-      const data = await fetchElections();
-      setParentElections(data.elections);
+      const data = await fetchElectionsCategory();
+      setParentElections(data.electionCategories);
     } catch (error) {
       console.error('Failed to fetch parent elections:', error);
     }

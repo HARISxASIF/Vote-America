@@ -23,7 +23,7 @@ const ElectionPartyModal = ({ isOpen, onClose, onSuccess, selectedElectionParty,
   const [name, setName] = useState('');
   const [description, setDescription] = useState('');
   const [icon, setIcon] = useState(null);
-  const [election_id, setElection_id] = useState('');
+  const [election_category_id, setElection_category_id] = useState('');
   const token = localStorage.getItem('authToken');
 
   useEffect(() => {
@@ -31,7 +31,7 @@ const ElectionPartyModal = ({ isOpen, onClose, onSuccess, selectedElectionParty,
       setName(selectedElectionParty.name);
       setDescription(selectedElectionParty.description);
       setIcon(selectedElectionParty.icon);
-      setElection_id(selectedElectionParty.election_id);
+      setElection_category_id(selectedElectionParty.election_category_id);
     } else {
       resetForm();
     }
@@ -45,7 +45,7 @@ const ElectionPartyModal = ({ isOpen, onClose, onSuccess, selectedElectionParty,
     if (icon && typeof icon !== 'string') {
       formData.append('icon', icon);
     }
-    formData.append('election_id', election_id);
+    formData.append('election_category_id', election_category_id);
 
     try {
       if (selectedElectionParty) {
@@ -93,7 +93,7 @@ const ElectionPartyModal = ({ isOpen, onClose, onSuccess, selectedElectionParty,
     setName('');
     setDescription('');
     setIcon(null);
-    setElection_id('');
+    setElection_category_id('');
   };
 
   return (
@@ -129,7 +129,7 @@ const ElectionPartyModal = ({ isOpen, onClose, onSuccess, selectedElectionParty,
 
             <FormControl>
               <FormLabel mt="15px">Election Party</FormLabel>
-              <Select value={election_id} onChange={(e) => setElection_id(e.target.value)} placeholder='Select Election Party'>
+              <Select value={election_category_id} onChange={(e) => setElection_category_id(e.target.value)} placeholder='Select Election Party'>
                 {parentElections.map((election) => (
                   <option key={election._id} value={election._id}>
                     {election.name}
