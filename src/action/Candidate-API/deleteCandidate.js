@@ -17,7 +17,7 @@ const deleteCandidate = async (candidateId, token) => {
       return { success: false, message: 'Failed to delete candidate' };
     }
   } catch (error) {
-    console.error('Error deleting election category:', error);
+    console.error('Error deleting candidate:', error);
     return { success: false, message: 'Error deleting candidate' };
   }
 };

@@ -15,6 +15,7 @@ import {
   InputGroup,
   InputRightElement,
   HStack,
+  Textarea,
 } from '@chakra-ui/react';
 import { ViewIcon, ViewOffIcon } from '@chakra-ui/icons';
 import { updateCandidate } from '../../../../action/Candidate-API/updateCandidate'; // Ensure path is correct
@@ -39,7 +40,10 @@ const CandidateModal = ({ isOpen, onClose, onSuccess, selectedCandidate }) => {
   const [backSide, setBackSide] = useState(null); // For file upload
   const [additionalDocuments, setAdditionalDocuments] = useState(null); // For file upload
   const [image, setImage] = useState(null); // For file upload
+  const [bio, setBio] = useState('');
+
   const token = localStorage.getItem('authToken');
+
 
   // States for Update Candidate fields
   const [personalDetailsStatus, setPersonalDetailsStatus] = useState('Pending');
@@ -84,6 +88,7 @@ const CandidateModal = ({ isOpen, onClose, onSuccess, selectedCandidate }) => {
     formData.append('back_side', backSide);
     formData.append('additional_documents', additionalDocuments);
     formData.append('image', image);
+    formData.append('bio', bio);
 
     try {
       await addCandidate(formData, token);
@@ -153,6 +158,7 @@ const CandidateModal = ({ isOpen, onClose, onSuccess, selectedCandidate }) => {
     setBackSide(null);
     setAdditionalDocuments(null);
     setImage(null);
+    setBio('');
   };
 
   return (
@@ -379,6 +385,18 @@ const CandidateModal = ({ isOpen, onClose, onSuccess, selectedCandidate }) => {
                     required
                   />
                 </FormControl>
+                <FormControl>
+                    <FormLabel mt="15px">Bio</FormLabel>
+                    <Textarea
+                      value={bio}
+                      onChange={(e) => setBio(e.target.value)}
+                      placeholder="Enter Candidate Bio"
+                      required
+                      size='lg'
+                      fontSize="1rem"
+                      minHeight="9rem"
+                    />
+                  </FormControl>
               </>
             )}
           </form>
@@ -391,7 +409,7 @@ const CandidateModal = ({ isOpen, onClose, onSuccess, selectedCandidate }) => {
             w="100%"
             h="40px"
             borderRadius="5px"
-            mt="30px"
+            mt="20px"
             bg="#082463"
             _hover={{ bg: '#CF2B28' }}
             _active={{ bg: '#082463' }}
