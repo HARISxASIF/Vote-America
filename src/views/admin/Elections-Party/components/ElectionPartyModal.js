@@ -10,20 +10,21 @@ import {
   FormLabel,
   Input,
   Button,
-  Select,
   Textarea,
   HStack,
   FormControl,
 } from '@chakra-ui/react';
 import addElectionParty from '../../../../action/ElectionsParty-API/addElectionsParty'; 
 import { updateElectionParty } from '../../../../action/ElectionsParty-API/updateElectionParty';
-import Swal from 'sweetalert2'
+import Swal from 'sweetalert2';
+import MultipleSelectField from 'components/multipleSelect/MultipleSelectField';
+
 
 const ElectionPartyModal = ({ isOpen, onClose, onSuccess, selectedElectionParty, parentElections }) => {
   const [name, setName] = useState('');
   const [description, setDescription] = useState('');
   const [icon, setIcon] = useState(null);
-  const [election_category_id, setElection_category_id] = useState('');
+  const [election_category_id, setElection_category_id] = useState([]);
   const token = localStorage.getItem('authToken');
 
   useEffect(() => {
@@ -31,7 +32,11 @@ const ElectionPartyModal = ({ isOpen, onClose, onSuccess, selectedElectionParty,
       setName(selectedElectionParty.name);
       setDescription(selectedElectionParty.description);
       setIcon(selectedElectionParty.icon);
-      setElection_category_id(selectedElectionParty.election_category_id);
+      setElection_category_id(
+        Array.isArray(selectedElectionParty.election_category_id)
+          ? selectedElectionParty.election_category_id
+          : [selectedElectionParty.election_category_id].filter(Boolean) // Avoid null/undefined
+      );
     } else {
       resetForm();
     }
@@ -45,7 +50,17 @@ const ElectionPartyModal = ({ isOpen, onClose, onSuccess, selectedElectionParty,
     if (icon && typeof icon !== 'string') {
       formData.append('icon', icon);
     }
-    formData.append('election_category_id', election_category_id);
+    // Append election_category_id directly as an array without JSON.stringify
+  election_category_id.forEach((id) => {
+    formData.append('election_category_id[]', id); // Use array notation
+  });
+
+
+  // Log all the `formData` values
+  for (let [key, value] of formData.entries()) {
+    console.log(`${key}:`, value);
+  }
+
 
     try {
       if (selectedElectionParty) {
@@ -93,7 +108,7 @@ const ElectionPartyModal = ({ isOpen, onClose, onSuccess, selectedElectionParty,
     setName('');
     setDescription('');
     setIcon(null);
-    setElection_category_id('');
+    setElection_category_id([]);
   };
 
   return (
@@ -129,13 +144,15 @@ const ElectionPartyModal = ({ isOpen, onClose, onSuccess, selectedElectionParty,
 
             <FormControl>
               <FormLabel mt="15px">Election Party</FormLabel>
-              <Select value={election_category_id} onChange={(e) => setElection_category_id(e.target.value)} placeholder='Select Election Party'>
-                {parentElections.map((election) => (
-                  <option key={election._id} value={election._id}>
-                    {election.name}
-                  </option>
-                ))}
-              </Select>
+              <MultipleSelectField
+                options={parentElections.map((election) => ({
+                  value: election._id,
+                  label: election.name,
+                }))}
+                selectedValues={election_category_id}
+                onChange={setElection_category_id}
+                placeholder="Select Election Party"
+              />
             </FormControl>
             </HStack>
 

@@ -1,9 +1,10 @@
-import React, { useState } from 'react';
+// import React, { useState } from 'react';
 import { TableContainer, Table, Thead, Tr, Th, Tbody, Td, Text, Icon, Image, Flex, Box, Button } from '@chakra-ui/react';
 import { TbEdit } from "react-icons/tb";
 import { MdOutlineDeleteOutline } from "react-icons/md";
 import deleteElectionParty from '../../../../action/ElectionsParty-API/deleteElectionParty';
 import Swal from 'sweetalert2'
+import ElectionCategoryList from 'components/scrollableList/ScrollableList';
 
 const ElectionPartyTable = ({ electionsParty, onEdit, parentElections, onDelete, token,openModal }) => {
   
@@ -42,9 +43,34 @@ const ElectionPartyTable = ({ electionsParty, onEdit, parentElections, onDelete,
   };
 
   const getParentElectionName = (election_category_id) => {
-    const parentElection = parentElections.find(e => e._id === election_category_id);
-    return parentElection ? parentElection.name : 'N/A';
+    if (!Array.isArray(election_category_id)) {
+      election_category_id = [election_category_id]; // Normalize to array
+    }
+  
+    return election_category_id
+      .map((id) => {
+        const parentElection = parentElections.find((e) => e._id === id);
+        return parentElection ? parentElection.name : 'N/A';
+      })
+      .join(', ');
   };
+
+
+
+  const ParentElectionCell = ({ electionCategoryIds }) => {
+    return (
+      <Td 
+        wordBreak="break-all"
+        whiteSpace="normal"
+        width="300px"
+      >
+        <ElectionCategoryList categoryIds={getParentElectionName(electionCategoryIds)} />
+      </Td>
+    );
+  };
+
+
+
 
   return (
     <TableContainer position="relative" top="80px" className='partyTable'>
@@ -80,7 +106,7 @@ const ElectionPartyTable = ({ electionsParty, onEdit, parentElections, onDelete,
           <Tr>
             <Th>NAME</Th>
             <Th>Icon</Th>
-            <Th>Election Party</Th>
+            <Th>Election Category</Th>
             <Th>Description</Th>
             <Th isNumeric>ACTIONS</Th>
           </Tr>
@@ -89,8 +115,13 @@ const ElectionPartyTable = ({ electionsParty, onEdit, parentElections, onDelete,
           {electionsParty.map((party, index) => (
             <Tr key={index}>
               <Td>{party.name}</Td>
-              <Td ><Image src={party.icon} alt={`${party.name} icon`} boxSize="50px" borderRadius="10px" objectFit="cover"/></Td>
-              <Td>{getParentElectionName(party.election_category_id)}</Td>
+              <Td padding="0px" width="120px"><Image src={party.icon} alt={`${party.name} icon`} height="auto" borderRadius="10px" objectFit="none" width="100%" /></Td>
+              <Td>
+                <ElectionCategoryList 
+                  categoryIds={party.election_category_id} 
+                  parentElections={parentElections} 
+                />
+              </Td>
               <Td>
                 <Text                   
                   sx={{
